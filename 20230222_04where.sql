@@ -58,7 +58,7 @@ where uname = '무궁화' or uname = '봉선화';
 -- 문9) 국, 영, 수 모두 100점 아닌 행을 조회하시오
 select uname, kor, eng, mat
 from sungjuk
-where kor!=100 or eng!=100 or mat!=100;
+where not (kor=100 and eng=100 and mat=100);
 
 
 
