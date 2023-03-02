@@ -188,31 +188,28 @@ where AA.address='제주';
 select * from tb_sugang order by hakno;
 select hakno from tb_sugang group by hakno; -- 수강신청 학번, 학생수
 
-select su.*, uname, address
+select SU.*, uname, address
 from tb_sugang SU join tb_student ST
 on SU.hakno=ST.hakno;-- 학생과 수강 테이블 조인
 
 
+select su.hakno, address
+from tb_sugang SU join tb_student ST
+on SU.hakno=ST.hakno
+group by Su.hakno, address; -- 수강신청한 학번과 주소만 조회
 
 
 
 select aa.address, count(*)
 from (
-        select su.*, uname, address
+        select su.hakno, address
         from tb_sugang SU join tb_student ST
         on SU.hakno=ST.hakno
+        group by Su.hakno, address
      ) AA
 group by aa.address;
 
 
-
-select *
-from (
-        select su.*, uname, address
-        from tb_sugang SU join tb_student ST
-        on SU.hakno=ST.hakno
-      ) AA
-where AA.address='제주' or AA.address='서울';
 
 
 
