@@ -212,18 +212,17 @@ group by aa.address;
 
 
 
+---------------------------원하는 답이 아님
+select address
+from tb_sugang SU join tb_student ST
+on SU.hakno=ST.hakno
+group by address;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+select aa.address
+from (
+        select address
+        from tb_sugang SU join tb_student ST
+        on SU.hakno=ST.hakno
+        group by address
+     ) AA
+group by aa.address;
