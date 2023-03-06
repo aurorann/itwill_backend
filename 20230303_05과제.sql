@@ -6,7 +6,58 @@
 
 문1) 디자인 교과목중에서 학점이 제일 많은 교과목을 수강신청한 명단을 조회하시오
     (학번, 이름, 과목코드)
+    
+--디자인교과목의 학점 조회
+select *from tb_gwamok where gcode like 'd%' order by ghakjum desc;
 
+--1) 디자인 교과목중에서 학점이 제일 많은 학점 조회하기
+select max(ghakjum)
+from tb_gwamok
+where gcode like 'd%'; --5
+
+--2) 1)결과에서 나온 학점(5)과 동일한 학점을 갖고 있는 행에서 과목코드 선택
+--   즉, 디자인 교과목중에서 학점이 제일 많은 과목코드(단, 중복된 학점이 없다는 가정하에)
+select gcode
+from tb_gwamok
+where ghakjum=(5)
+and gcode like 'd%'; --d002
+
+select gcode
+from tb_gwamok
+where ghakjum=(select max(ghakjum) from tb_gwamok where ghakjum=(5) and gcode like 'd%')
+and gcode like 'd%'; --d002
+
+--3) 2)에서 나온 과목코드(d002)를 수강신청한 명단을 조회
+select gcode, hakno from tb_sugang where gcode=('d002');
+
+select gcode, hakno
+from tb_sugang
+where gcode=(
+                select gcode
+                from tb_gwamok
+                where ghakjum=(select max(ghakjum) from tb_gwamok where ghakjum=(5) and gcode like 'd%')
+                and gcode like 'd%'
+            );
+
+--4) 3)의 결과를 AA테이블로 만든 후, 학생 테이블을 조인해서 이름 가져오기
+select ST.uname, aa.hakno, aa.gcode
+from(
+    select gcode, hakno
+    from tb_sugang
+    where gcode=(
+                    select gcode
+                    from tb_gwamok
+                    where ghakjum=(select max(ghakjum) from tb_gwamok where ghakjum=(5) and gcode like 'd%')
+                    and gcode like 'd%'
+                )
+    ) AA join tb_student ST
+on AA.hakno=ST.hakno;
+
+
+
+
+
+--경은코드
 select su.hakno, st.uname, gw.gcode
 from tb_sugang SU join tb_student ST
 on SU.hakno=st.hakno join tb_gwamok GW
