@@ -21,7 +21,7 @@
 		</div>
 		
 		<div class="bottom">
-			<input type="submit" value="삭제" onclick="location.href='delete.do'">
+			<input type="submit" value="삭제">
 			<input type="button" value="목록" onclick="location.href='list.do'">
 		</div>
 	</form>

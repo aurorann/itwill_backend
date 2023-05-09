@@ -4,12 +4,12 @@ width: 20%;
   font-size: 18px;
   text-align: center;
   border-style: solid;   /* 실선 */
-  border-width: 1px;     /* 선 두께 */
+  border-width: 0px;     /* 선 두께 */
   border-color: #AAAAAA; /* 선 색깔 */
-  color: #000000;        /* 글자 색깔 */
-  padding: 5px;         /* 위 오른쪽 아래 왼쪽: 시간 방향 적용 */
+  color: #FFFFFF;        /* 글자 색깔 */
+  padding: 15px;         /* 위 오른쪽 아래 왼쪽: 시간 방향 적용 */
   margin: 20px auto; /* 가운데 정렬 기능, 20px: 위 아래, auto: 오른쪽 왼쪽*/
-  background-color: #EEEEEE;
+  background-color: #F08080;
   font-weight: bold;
 }
  
@@ -109,8 +109,8 @@ TH{
   border-width: 1px;         /* 테이블 외곽선 두께 */ 
   border-style: solid;       /* 테이블 외곽선 스타일 */
  
-  color: #FFFFFF;            /* 글자 색 */ 
-  background-color: #668db4; /* 배경 색 */
+  color: #696969;            /* 글자 색 */ 
+  background-color: #FFDAB9; /* 배경 색 */
   padding: 2px;              /* 셀 내부 간격 */
 }
  

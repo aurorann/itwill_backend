@@ -102,9 +102,114 @@ public class MediagroupDAO {
 	}//delete() end
 	
 	
+	public MediagroupDTO read(int mediagroupno) {
+		MediagroupDTO dto=null;
+		
+		try {
+			sql=new StringBuilder();
+			sql.append(" SELECT mediagroupno, title ");
+			sql.append(" FROM mediagroup ");
+			sql.append(" WHERE mediagroupno = " + mediagroupno);
+			
+			RowMapper<MediagroupDTO> rowMapper=new RowMapper<MediagroupDTO>() {
+				@Override
+				public MediagroupDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+					MediagroupDTO dto=new MediagroupDTO();
+					dto.setMediagroupno(rs.getInt("mediagroupno"));
+					dto.setTitle(rs.getString("title"));
+					return dto;
+				}//mapRow()end
+			};//rowMapper
+			
+			dto =jt.queryForObject(sql.toString(), rowMapper);
+			
+		} catch (Exception e) {
+			System.out.println("미디어 그룹 조회 실패 : "+e);
+		}
+		return dto;
+	}//read() end
 	
 	
+	public int update(MediagroupDTO dto) {
+		int cnt=0;
+		try {
+			sql=new StringBuilder();
+			
+			sql.append(" UPDATE mediagroup ");
+			sql.append(" SET title = ? ");
+			sql.append(" WHERE mediagroupno = ? ");
+			
+			cnt = jt.update(sql.toString(), dto.getTitle(), dto.getMediagroupno());
+			
+		} catch (Exception e) {
+			System.out.println("미디어그룹 수정 실패 : "+e);
+		}//end
+		return cnt;
+	}//create() end
 	
+	/*
+	public List<MediagroupDTO> list(){
+		List<MediagroupDTO> list=null;
+		try {
+			sql=new StringBuilder();
+			sql.append(" SELECT mediagroupno, title ");
+			sql.append(" FROM mediagroup ");
+			sql.append(" ORDER BY mediagroupno DESC ");
+			
+			RowMapper<MediagroupDTO> rowMapper=new RowMapper<MediagroupDTO>() {
+				@Override
+				public MediagroupDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+					MediagroupDTO dto=new MediagroupDTO();
+					dto.setMediagroupno(rs.getInt("mediagroupno"));
+					dto.setTitle(rs.getString("title"));
+					return dto;
+				}//mapRow()end
+			};//rowMapper
+			
+			list=jt.query(sql.toString(), rowMapper);
+			
+		} catch (Exception e) {
+			System.out.println("미디어그룹 목록 보기 실패 : "+e);
+		}
+		return list;
+	}//list() end
+	*/	
+	
+	
+    public List<MediagroupDTO> list2(int start, int end){
+		List<MediagroupDTO> list=null;
+        try {
+			sql=new StringBuilder();           
+            sql.append(" SELECT AA.* ");
+            sql.append(" FROM ( ");
+            sql.append("        SELECT ROWNUM as RNUM, BB.* ");
+            sql.append("        FROM ( ");
+            sql.append("               SELECT mediagroupno, title ");
+            sql.append("               FROM mediagroup ");
+            sql.append("               ORDER BY mediagroupno DESC ");
+            sql.append("             )BB ");
+            sql.append("      ) AA ");
+            sql.append(" WHERE AA.RNUM >="+start+"AND AA.RNUM<="+end);           
+           
+			RowMapper<MediagroupDTO> rowMapper=new RowMapper<MediagroupDTO>() {
+				@Override
+				public MediagroupDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+					MediagroupDTO dto=new MediagroupDTO();
+					dto.setMediagroupno(rs.getInt("mediagroupno"));
+					dto.setTitle(rs.getString("title"));
+					return dto;
+				}//mapRow()end
+			};//rowMapper
+			
+			list=jt.query(sql.toString(), rowMapper);
+           
+        }catch(Exception e) {
+            System.out.println("미디어 그룹 페이징 목록 실패: "+e);
+        }
+        return list;
+    }//list2() end
+
+
 	
 	
 	

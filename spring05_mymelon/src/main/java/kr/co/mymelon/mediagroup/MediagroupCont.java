@@ -1,6 +1,9 @@
 package kr.co.mymelon.mediagroup;
 
+import java.util.Collections;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -52,6 +55,7 @@ public class MediagroupCont {
 	}//createProc() end
 	
 	
+	/* 1) 페이징 없는 목록
 	@RequestMapping("mediagroup/list.do")
 	public ModelAndView list() {
 		ModelAndView mav=new ModelAndView();
@@ -65,10 +69,67 @@ public class MediagroupCont {
 		
 		return mav;
 	}//list() end
+	*/
+	
+	//2) 페이징 있는 목록
+	
+    @RequestMapping("mediagroup/list.do")
+    public ModelAndView list(HttpServletRequest req) {
+        ModelAndView mav=new ModelAndView();
+        mav.setViewName("mediagroup/list");
+       
+        int totalRowCount=dao.totalRowCount(); //총 글갯수
+       
+        //페이징
+        int numPerPage   = 5;    // 한 페이지당 레코드 갯수
+        int pagePerBlock = 10;   // 페이지 리스트
+       
+        String pageNum=req.getParameter("pageNum");
+        if(pageNum==null){
+              pageNum="1";
+        }
+       
+        int currentPage=Integer.parseInt(pageNum);
+        int startRow   =(currentPage-1)*numPerPage+1;
+        int endRow     =currentPage*numPerPage;
+       
+        //페이지 수
+        double totcnt = (double)totalRowCount/numPerPage;
+        int totalPage = (int)Math.ceil(totcnt);
+         
+        double d_page = (double)currentPage/pagePerBlock;
+        int Pages     = (int)Math.ceil(d_page)-1;
+        int startPage = Pages*pagePerBlock;
+        int endPage   = startPage+pagePerBlock+1;
+       
+       
+        List list=null;     
+        if(totalRowCount>0){           
+              list=dao.list2(startRow, endRow);          
+        } else {           
+              list=Collections.EMPTY_LIST;           
+        }//if end
+         
+        //int number=0;
+        //number=totalRowCount-(currentPage-1)*numPerPage;
+         
+        //mav.addObject("number",    number);
+        mav.addObject("pageNum",   currentPage);
+        //mav.addObject("startRow",  startRow);
+        //mav.addObject("endRow",    endRow);
+        mav.addObject("count",     totalRowCount);
+        //mav.addObject("pageSize",  pagePerBlock);
+        mav.addObject("totalPage", totalPage);
+        mav.addObject("startPage", startPage);
+        mav.addObject("endPage",   endPage);
+        mav.addObject("list", list);
+        return mav;
+    }//list() end
+	
 	
 	
 	@RequestMapping(value = "mediagroup/delete.do", method = RequestMethod.GET)
-	public ModelAndView deleteProc(int mediagroupno) {
+	public ModelAndView deleteForm(int mediagroupno) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("mediagroup/deleteForm");
 		mav.addObject("mediagroupno", mediagroupno);
@@ -78,15 +139,50 @@ public class MediagroupCont {
 	
 	
 	@RequestMapping(value = "mediagroup/delete.do", method = RequestMethod.POST)
-	public ModelAndView deleteForm(int mediagroupno) {
+	public ModelAndView deleteProc(int mediagroupno) {
+		
+		//int mediagroupno=Integer.parseInt(req.getParameter("mediagroupno"));
+		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("mediagroup/deleteForm");
-		mav.addObject("mediagroupno", mediagroupno);
 		
 		int cnt=dao.delete(mediagroupno);
 		if(cnt==0) {
 			mav.setViewName("mediagroup/msgView");
+			
 			String msg1 = "<p>미디어 그룹 삭제 실패</p>";
+			String img = "<img src='../images/bearggu9.gif'>";
+			String link1 = "<input type='button' value='다시시도' onclick='javascript:history.back()'>";
+			String link2 = "<input type='button' value='그룹목록' onclick='location.href=\"list.do\"'>";
+			
+			mav.addObject("msg1", msg1);
+			mav.addObject("img", img);
+			mav.addObject("link1", link1);
+			mav.addObject("link2", link2);			
+		}else {
+			mav.setViewName("redirect:/mediagroup/list.do");
+		}//if end			
+		return mav;
+	}//deleteProc() end
+	
+	
+	@RequestMapping(value = "mediagroup/update.do", method = RequestMethod.GET)
+	public ModelAndView updateForm(int mediagroupno) {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("mediagroup/updateForm");
+		mav.addObject("dto", dao.read(mediagroupno));
+	
+		return mav;
+	}//updateForm() end
+	
+	
+	@RequestMapping(value = "mediagroup/update.do", method = RequestMethod.POST)
+	public ModelAndView updateProc(@ModelAttribute MediagroupDTO dto) {
+		ModelAndView mav=new ModelAndView();
+		
+		int cnt=dao.update(dto);
+		if(cnt==0) {
+			mav.setViewName("mediagroup/msgView");
+			String msg1 = "<p>미디어 그룹 수정 실패</p>";
 			String img = "<img src='../images/bearggu9.gif'>";
 			String link1 = "<input type='button' value='다시시도' onclick='javascript:history.back()'>";
 			String link2 = "<input type='button' value='그룹목록' onclick='location.href=\"list.do\"'>";
@@ -98,14 +194,10 @@ public class MediagroupCont {
 			
 		}else {
 			mav.setViewName("redirect:/mediagroup/list.do");
-		}//if end	
-		
-		
+		}//if end
 		return mav;
-	}//deleteForm() end
-	
-	
-	
+	}//updateProc() end
+
 	
 	
 	
