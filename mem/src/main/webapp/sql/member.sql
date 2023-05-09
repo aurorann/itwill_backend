@@ -13,14 +13,12 @@ set linesize 1000;
 col mid for a20;
 col passwd for a10;
 col mname for a10;
+col jomin for a20;
 col tel for a20;
 col email for a30;
-col zipcode for a10;
-col address1 for a20;
-col address2 for a20;
-col job for a10;
 col mlevel for a10;
 col mdate for a10;
+
 select * from member;
 
 --회원테이블
@@ -28,11 +26,12 @@ CREATE TABLE member (
 	mid varchar2(10) 	NOT NULL,
 	passwd varchar2(10) NOT NULL,
 	mname varchar2(20) 	NOT NULL,
-	jomin number(13) 	NOT NULL,
-	tel vachar2(14) 	NOT NULL,
-	email vachar2(50) 	NOT NULL  UNIQUE,
-	mlevel char(2) 		NOT NULL,	--DEFAULT 일반회원,
-	mdate DATE 			NOT NULL,	--DEFAULT sysdate
+	jomin1 number(6) 	NOT NULL,
+	jomin2 number(7) 	NOT NULL,
+	tel varchar2(14)      NOT NULL,
+	email varchar2(50) 	NOT NULL  UNIQUE,
+	mlevel char(2) DEFAULT 'B1',
+	mdate DATE DEFAULT sysdate,
 	PRIMARY KEY(mid)
 );
 
@@ -42,18 +41,15 @@ commit;
 
 
 --행추가
-insert into member(id, passwd, mname, tel, email, zipcode, address1, address2, job, mlevel, mdate)
-values('webmaster', '12341234', '웹마스터', '123-4567', 'webmaster@itwill.com'
-     , '12345', '서울시 강남구 역삼동', '삼원타워4층', 'A02', 'A1', sysdate );
+insert into member(mid, passwd, mname, jomin1, jomin2, tel, email)
+values('webmaster', '12341234', '웹마스터', '000123', '3234567', '010-1234-5678', 'webmaster@itwill.com');
 
-insert into member(id, passwd, mname, tel, email, zipcode, address1, address2, job, mlevel, mdate)
-values('itwill', '12341234', '웹마스터', '123-4567', 'itwill@itwill.com'
-     , '12345', '서울시 강남구 역삼동', '삼원타워4층', 'A02', 'D1', sysdate );
+insert into member(mid, passwd, mname, jomin1, jomin2, tel, email, mlevel, mdate)
+values('itwill', '12341234', '아이티윌', '000124', '4234567', '010-2345-6789', 'aurorann@daum.net', 'B1', sysdate );
 
-insert into member(id, passwd, mname, tel, email, zipcode, address1, address2, job, mlevel, mdate)
-values('korea', '12341234', '웹마스터', '123-4567', 'user1@soldesk.com'
-     , '12345', '서울시 종로구 관철동', '코아빌딩8층', 'A02', 'F1', sysdate );
-     
+insert into member(mid, passwd, mname, jomin1, jomin2, tel, email, mlevel, mdate)
+values('korea', '12341234', '코리아', '990124', '2234567', '010-2345-6789', 'aurora0323@naver.com', 'C1', sysdate );
+
 commit;
 
 
@@ -62,22 +58,22 @@ commit;
 --단, 비회원과 탈퇴회원은 제외
 select mlevel
 from member
-where id='webmaster' and passwd='12341234' and mlevel in ('A1', 'B1', 'C1', 'D1');
+where id='webmaster' and passwd='12341234' and mlevel in ('A1', 'B1');
 
 select mlevel
 from member
-where id='itwill' and passwd='12341234' and mlevel in ('A1', 'B1', 'C1', 'D1');
+where id='itwill' and passwd='12341234' and mlevel in ('A1', 'B1');
 
 select mlevel
 from member
-where id='korea' and passwd='12341234' and mlevel in ('A1', 'B1', 'C1', 'D1');
+where id='korea' and passwd='12341234' and mlevel in ('A1', 'B1');
 
 
 --아이디 중복 확인
 --id 갯수를 조회했을때 0이면 사용가능. 1이면 사용불가
-select count(id)
+select count(mid)
 from member
-where id=?;
+where mid=?;
 
 
 --회원가입
@@ -101,3 +97,6 @@ where mname=? and email=?;
 update member
 set passwd=?
 where mname=? and email=?
+
+
+--회원탈퇴
