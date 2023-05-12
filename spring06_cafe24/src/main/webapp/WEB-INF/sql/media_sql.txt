@@ -22,3 +22,4 @@ create sequence media_seq;
 select * from media
 where mview='Y' and mediagroupno=?
 order by mediano desc;
+
