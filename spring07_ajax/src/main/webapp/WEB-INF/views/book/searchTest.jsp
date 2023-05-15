@@ -15,7 +15,7 @@
 		<input type="text" name="keyword" id="keyword">
 		<input type="button" value="검색">
 	</form>
-	
+
 	<!-- 검색 결과 출력 -->
 	<div id="panel" style="display:none"></div>
 	
@@ -41,6 +41,29 @@
 		
 		function responseProc(data) {
 			//alert(data);
+			//예)3|"자바", "자바 프로그래밍", "자바 안드로이드"
+			
+			if(data.length>0){//응답받은 내용이 있는지?
+				let result = data.split("|");//기호를 기준으로 문자열 분리
+				//자바 검색어 입력시
+				//alert(result[0]);//3
+				//alert(result[1]);//"자바", "자바 프로그래밍", "자바 안드로이드"
+				let title = result[1].split(",");
+				let str="";//최종결과값
+				$.each(title, function(index,key){
+					//alert(index); 순서
+					//alert(key);	내용
+					str += "<a href='#'>"+key+"</a>";
+					str += "<br>";
+				});//each() end
+				
+				$("#panel").html(str);
+				$("#panel").show();
+				
+			}else{
+				//${"#panel"}.hide(); //괄호 오타!
+				$("#panel").hide();
+			}//if end
 		}//responseProc() end
 		
 	</script>
