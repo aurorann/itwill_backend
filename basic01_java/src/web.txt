@@ -1,7 +1,0 @@
-itwill
-Frontend : HTML/CSS/JavaScript
-Backend : Oracle Database, JavaOOP
-
-
-javac TypeTest.java
-java TypeTest
