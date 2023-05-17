@@ -11,3 +11,13 @@ create table product (
 
 --상품번호 시퀀스 생성
 create sequence product_seq;
+
+--콘솔창 정리
+set linesize 1000;
+col product_name for a20;
+col description for a20;
+col filename for a20;
+col regdate for a20;
+
+
+select * from product;

@@ -23,5 +23,37 @@ public class ProductDAO {
 		return sqlSession.selectList("product.list");
 	}//list() end
 	
+	
+	public void insert(Map<String, Object> map) {
+		sqlSession.insert("product.insert", map);
+	}//insert() end
+	
+	
+	public List<Map<String, Object>> search(String product_name){
+		return sqlSession.selectList("product.search", "%" + product_name + "%");
+	}//list() end
+	
+	
+	public Map<String, Object> detail(int product_code){
+		return sqlSession.selectOne("product.detail", product_code);
+	}//detail() end
+	
+	
+	public String filename(int product_code) {
+		return sqlSession.selectOne("product.filename", product_code);
+	}//filename() end
+	
+	
+	public void delete(int product_code) {
+		sqlSession.delete("product.delete", product_code);
+	}//delete() end
+	
+	 
+	
+	
+	
+	
+	
+
 
 }//class end
