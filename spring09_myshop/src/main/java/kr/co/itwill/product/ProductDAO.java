@@ -48,6 +48,11 @@ public class ProductDAO {
 		sqlSession.delete("product.delete", product_code);
 	}//delete() end
 	
+	
+	public void update(Map<String, Object> map) {
+		sqlSession.update("product.update", map);
+	}//update() end
+	
 	 
 	
 	

@@ -130,27 +130,49 @@ public class ProductCont {
 			return "redirect:/product/list";		
 
 		}//delete() end	
+		
+		
+		@RequestMapping("/update")
+		public String update(@RequestParam Map<String, Object> map
+							,@RequestParam MultipartFile img
+							,HttpServletRequest req) {
+			String filename="-";
+			long filesize=0;
+			if(img != null && !img.isEmpty()) {
+				filename = img.getOriginalFilename();
+				filesize = img.getSize();
+				try {
+					ServletContext application = req.getSession().getServletContext();
+					String path = application.getRealPath("/storage");
+					img.transferTo(new File(path+"\\"+filename));
+				} catch (Exception e) {
+					e.printStackTrace();//System.out.println(e)
+				}//try end
+			}else {
+				int product_code = (int) map.get("product_code");
+				Map<String, Object> product = productDAO.detail(product_code);
+				filename = product.get("FILENAME").toString();
+				filesize = (long) product.get("FILENAME");
+			}//if end
+			
+			map.put("filename", filename);
+			map.put("filesize", filesize);
+			productDAO.update(map);
+			
+			return "redirect:/product/list";				
+
+		}//update() end
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	
 }//class end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
