@@ -11,7 +11,7 @@
 	
 </head>
 <body>
-	<div class="container-fluid" style="margin: auto; width: 550px">
+	<div class="container-fluid" style="margin: auto; width: 600px">
 	<h3 class="text-center">상품등록</h3>
 
 	<form name="productfrm" id="productfrm" method="post" action="insert" enctype="multipart/form-data">

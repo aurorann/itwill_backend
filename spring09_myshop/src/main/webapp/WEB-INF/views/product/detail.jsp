@@ -39,7 +39,7 @@
 	
 </head>
 <body>
-	<div class="container-fluid" style="margin: auto; width: 550px">
+	<div class="container-fluid" style="margin: auto; width: 600px;">
 	<h3 class="text-center">상품 상세보기 / 상품 수정 / 상품 삭제</h3>
 	<br>
 	<form name="productfrm" id="productfrm" method="post" enctype="multipart/form-data">
@@ -90,6 +90,7 @@
 				<input type="text" name="content" id="content" placeholder="내용을 입력해주세요">
 				<button type="button" name="commentInsertBtn" id="commentInsertBtn">등록</button>
 			</div>
+			<br>
 		</form>
 	</div>
 	
@@ -150,7 +151,16 @@
 						//alert(value.regdate);
 						//alert(value.product_code);
 						
-						a += value.content + "<br>";
+						a += '<div class="commentArea" style="border-bottom:1px solid darkgray; margin-bottom:15px;">'
+						a += '		<div class="commentInfo' + value.cno +'">';
+						a += '			댓글번호:' + value.cno + ' / 작성자:' + value.wname + " " + value.regdate;
+						a += '			<a href="javascript:commentUpdate(' + value.cno + ',\'' + value.content + '\')">[수정]</a>';
+						a += '			<a href="javascript:commentDelete(' + value.cno + ')">[삭제]</a>';
+						a += '		</div>';
+						a += '		<div class="commentContent' + value.cno + '">';
+						a += '			<p>내용:' + value.content + "</p>";
+						a += '		</div>';
+						a += '</div>'
 						
 					});//each() end
 					
@@ -159,6 +169,58 @@
 			});//ajax() end			
 			
 		}//commentList() end
+		
+		
+		//댓글수정 - 댓글 내용 출력을 input 폼으로 변경
+		function commentUpdate(cno, content) {
+			//alert(cno+content);
+			let a='';
+			a += '<div class="input-group">';
+			a += '		<input type="text" value="' + content + '" id="content_' + cno + '">';
+			a += '		<button type="button" onclick="commentUpdateProc('+ cno +')">수정</button>';
+			a += '</div>';
+			//alert(a);
+			$(".commentContent" + cno).html(a);
+		}//commentUpdate() end
+		
+		
+		//댓글수정
+		function commentUpdateProc(cno) {
+			//alert("댓글수정"+cno);
+			let updateContent=$('#content_' + cno).val();
+			
+			$.ajax({
+				  url:'/comment/update'
+				, type:'post'
+				, data:{'content':updateContent, 'cno':cno}
+				, success:function(data){//콜백함수
+					//alert(data);
+					if (data==1) {
+						alert("댓글이 수정되었습니다");
+						commentList();//댓글 수정후 목록 출력
+					}//if end
+				}//success end
+			})//ajax() end
+		}//commentUpdateProc() end
+		
+		
+		//댓글삭제
+		function commentDelete(cno){
+			//alert("댓글삭제"+cno);
+			$.ajax({
+				  url:'/comment/delete/' + cno
+				, type:'post'
+				, success:function(data){//콜백함수
+					//alert(data);
+					if (data==1) {
+						alert("댓글이 삭제되었습니다");
+						commentList();//댓글 삭제후 목록 출력
+					}//if end
+				}//success end
+			});//ajax() end
+		}//commentDelete()end
+		
+		
 		
 		
 		$(document).ready(function(){//페이지 로딩시 댓글 목록 출력

@@ -162,17 +162,6 @@ public class ProductCont {
 			return "redirect:/product/list";				
 
 		}//update() end
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
 	
 }//class end

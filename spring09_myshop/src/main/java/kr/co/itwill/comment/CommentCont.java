@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -43,6 +44,24 @@ public class CommentCont {
 	public List<CommentDTO> mCommentServiceList(@RequestParam int product_code) throws Exception{
 		return commentdao.commentlist(product_code);
 	}//mCommentServiceList() end
+	
+	
+	@RequestMapping("/delete/{cno}")
+	@ResponseBody
+	public int mCommentServiceDelete(@PathVariable int cno) throws Exception{
+		return commentdao.commentDelete(cno);
+	}//mCommentServiceDelete() end
+	
+	
+	@RequestMapping("/update")
+	@ResponseBody
+	private int mCommentServiceUpdateProc(@RequestParam int cno, @RequestParam String content) throws Exception{
+		CommentDTO comment = new CommentDTO();
+		comment.setCno(cno);
+		comment.setContent(content);
+		return commentdao.commentUpdate(comment);
+	}//mCommentServiceUpdateProc() end
+	
 	
 	
 	

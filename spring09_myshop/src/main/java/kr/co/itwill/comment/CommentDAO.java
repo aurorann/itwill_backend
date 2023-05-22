@@ -24,5 +24,15 @@ public class CommentDAO {
 	public List<CommentDTO> commentlist(int product_code){
 		return sqlSession.selectList("comment.list", product_code);
 	}//commentlist() end
+	
+	
+	public int commentDelete(int cno) throws Exception {
+		return sqlSession.delete("comment.delete", cno);
+	}//delete() end
+	
+	
+	public int commentUpdate(CommentDTO comment) {
+		return sqlSession.update("comment.update", comment);
+	}//update() end
 
 }//class end
