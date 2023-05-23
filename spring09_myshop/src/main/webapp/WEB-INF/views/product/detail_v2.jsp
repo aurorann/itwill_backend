@@ -30,21 +30,17 @@
 		}//product_delete() end
 		
 		
-		function product_cart() {
-			if ($("#qty").val()==0) {
-				alert("상품수량 선택해 주세요");
-			}else{
-				document.productfrm.action="/cart/insert";
-				document.productfrm.submit();
-			}//if end
-		}//product_cart() end
+		function product_update() {
+			document.productfrm.action="/product/update";
+			document.productfrm.submit();
+		}//product_update() end
 		
 	</script>
 	
 </head>
 <body>
 	<div class="container-fluid" style="margin: auto; width: 600px;">
-	<h3 class="text-center">상품 상세보기 · 상품 수정 · 상품 삭제</h3>
+	<h3 class="text-center">상품 상세보기 / 상품 수정 / 상품 삭제</h3>
 	<br>
 	<form name="productfrm" id="productfrm" method="post" enctype="multipart/form-data">
 		<p align="center">
@@ -74,24 +70,10 @@
 	        <input type="file" name="img"> </td>
 	    </tr>
 	    <tr>
-	        <td style="background-color: #FFF8DC; font-weight: bold;">상품수량</td>
-	        <td> 
-	        	<select name="qty" id="qty">
-	        		<option value="0">◈ 선택 ◈</option>
-	        		<option value="1">1</option>
-	        		<option value="2">2</option>
-	        		<option value="3">3</option>
-	        		<option value="4">4</option>
-	        		<option value="5">5</option>
-	        	</select> 
-	        </td>
-	    </tr>
-	    <tr>
 	        <td colspan="2" align="center">
 	        	<input type="hidden" name="product_code" value="${product.PRODUCT_CODE}">
 	        	<input type="button" value="상품수정" onclick="product_update()" class="btn btn-warning">
 	        	<input type="button" value="상품삭제" onclick="product_delete()" class="btn btn-danger">
-	        	<input type="button" value="장바구니 담기" onclick="product_cart()" class="btn btn-success	">
 	        </td>
 	    </tr>	
 	    </table>
@@ -247,6 +229,20 @@
 		
 	</script>
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 	</div>
 </body>
 </html>
