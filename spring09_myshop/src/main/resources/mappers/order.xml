@@ -9,7 +9,41 @@
 	<select id="orderno" resultType="String" parameterType="String">
 		SELECT nvl(max(orderno),'1')
 		FROM orderlist
-		WHERE orderno LIKE #{date} || '%';
+		WHERE orderno LIKE #{date} || '%'
+	</select>
+	
+	
+	<select id="totalamount" resultType="int" parameterType="String">
+		SELECT sum(price*qty)
+		FROM cart
+		WHERE id=#{s_id}
+	</select>
+	
+	
+	<insert id="orderListInsert" parameterType="kr.co.itwill.order.OrderDTO">
+		INSERT INTO orderlist (orderno, id, totalamount, payment, deliverynm, deliveryaddr, deliverymsg, ordercheck)
+		values (#{orderno}, #{id}, #{totalamount}, #{payment}, #{deliverynm}, #{deliveryaddr}, #{deliverymsg},'I')
+	</insert>
+	
+	
+	<insert id="orderdetailInsert" parameterType="java.util.HashMap">
+		INSERT INTO orderdetail(ono, orderno, product_code, qty, price)
+			SELECT orderdetail_seq.nextval, #{orderno}, product_code, qty, price
+			FROM cart
+			WHERE id=#{s_id}
+	</insert>
+	
+	
+	<delete id="cartDelete" parameterType="String">
+		DELETE FROM cart
+		WHERE id=#{s_id}
+	</delete>
+	
+	
+	<select id="list" resultType="kr.co.itwill.order.OrderDTO" parameterType="String">
+		SELECT orderno, id, totalamount, payment, deliverynm, deliveryaddr, deliverymsg, ordercheck, orderdate
+		FROM orderlist
+		WHERE id=#{s_id}
 	</select>
 
 

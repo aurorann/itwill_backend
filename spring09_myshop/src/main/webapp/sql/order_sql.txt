@@ -14,6 +14,17 @@ create table orderlist(
  	,orderdate 		date 			default sysdate --주문일
 );
 
+--콘솔창 정리
+set linesize 1000;
+col orderno for a20;
+col id for a10;
+col payment for a20;
+col deliverynm for a20;
+col deliveryaddr for a20;
+col deliverymsg for a20;
+col ordercheck for a20;
+col orderdate for a20;
+
 
 --주문서 번호 생성
 select nvl(max(orderno),concat('20230523171723', 0)+1)
@@ -24,7 +35,10 @@ insert into orderlist (orderno, id, totalamoung, deliverynm, deliveryaddr, order
 value('20230523171723', 'test', 0, 'card', 'test', 'test', 'I')
 
 
-
+--총결제금액
+select sum(price*qty)
+from cart
+where id=?;
 
 
 --주문 상세 내역
@@ -35,7 +49,21 @@ create table orderdetail(
 	,qty 			number 		not null 		--수량
 	,price 			number 		not null 		--가격
 );
-
+ 
 
 --주문 상세 내역 시퀀스 생성
-create sequence orderdetail_seq
+create sequence orderdetail_seq;
+
+
+--cart테이블에 있는 주문상품을 orderdetail테이블 옮겨 담기
+insert into orderdetail(ono, orderno, product_code, qty, price)
+	select orderdetail_seq.nextval, '202305241303181', product_code, qty, price
+	from cart
+	where id='test';
+
+
+
+
+
+
+

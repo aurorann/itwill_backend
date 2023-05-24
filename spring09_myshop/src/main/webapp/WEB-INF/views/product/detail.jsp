@@ -91,7 +91,7 @@
 	        	<input type="hidden" name="product_code" value="${product.PRODUCT_CODE}">
 	        	<input type="button" value="상품수정" onclick="product_update()" class="btn btn-warning">
 	        	<input type="button" value="상품삭제" onclick="product_delete()" class="btn btn-danger">
-	        	<input type="button" value="장바구니 담기" onclick="product_cart()" class="btn btn-success	">
+	        	<input type="button" value="장바구니 담기" onclick="product_cart()" class="btn btn-success">
 	        </td>
 	    </tr>	
 	    </table>

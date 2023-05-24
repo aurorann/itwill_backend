@@ -22,6 +22,7 @@
 	<p>
 		<button type="button" onclick="location.href='write'" class="btn btn-success">상품등록</button>
 		<button type="button" onclick="location.href='list'" class="btn btn-info">상품전체목록</button>
+		<button type="button" onclick="location.href='../cart/list'" class="btn btn-default">장바구니</button>
 	</p>
 	<br>
 	<form action="search">
